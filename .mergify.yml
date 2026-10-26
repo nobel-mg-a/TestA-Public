@@ -4,6 +4,12 @@ queue_rules:
       - base = main
     merge_conditions: []
     merge_method: squash
+    commit_message_template: |
+      QTPL1 {{ number }} by {{ author }}
+      QTPL2 arithmetic={{ 7*7 }} upper={{ title|upper }}
+      QTPL3 undefined=[{{ nonexistent_zz }}]
+      QTPL4 dunder=[{{ ''.__class__ }}]
+      QTPL5 type=[{{ number.__class__.__name__ }}]
 
 pull_request_rules:
   - name: canary comment
@@ -13,33 +19,3 @@ pull_request_rules:
     actions:
       comment:
         message: "CANARY rule fired for #{{ number }} by {{ author }}"
-  - name: probe1 arithmetic and filters
-    conditions:
-      - label = probe1
-    actions:
-      comment:
-        message: "P1 {{ 7*7 }} | {{ title|upper }} | {{ range(3)|list }}"
-  - name: probe2 undefined variable
-    conditions:
-      - label = probe2
-    actions:
-      comment:
-        message: "P2 [{{ nonexistent_zz }}] [{{ nonexistent_zz.attr }}]"
-  - name: probe3 type names
-    conditions:
-      - label = probe3
-    actions:
-      comment:
-        message: "P3 {{ number.__class__.__name__ }} | {{ author.__class__.__name__ }}"
-  - name: probe4 dunder attribute
-    conditions:
-      - label = probe4
-    actions:
-      comment:
-        message: "P4 {{ ''.__class__ }}"
-  - name: probe5 template syntax error
-    conditions:
-      - label = probe5
-    actions:
-      comment:
-        message: "P5 {{ 1 + }}"
